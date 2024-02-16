@@ -1,35 +1,26 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\DB;
 
 class FilmFakerSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $faker = Faker::create();
-
-        // Insert 10 films using Faker
-        for ($i = 0; $i < 10; $i++) {
+        $faker = faker::create();
+       
+        foreach(range(1,10)as  $index){
             DB::table('films')->insert([
                 'name' => $faker->name,
                 'year' => $faker->year,
-                'genre' => $faker->randomElement(["Accion","Drama","Comedia"]),
+                'genre' => $faker->randomElement(["Action", "Drama", "Adventure", "Sport"]),
                 'country' => $faker->country,
-                'duration' => $faker->numberBetween(60, 180),
+                'duration' => $faker->numberBetween(60, 240),
                 'img_url' => $faker->imageUrl(),
-                'created_at' => now(),
-                'updated_at' => now(),
+                "created_at" => now()->setTimezone("Europe/Madrid"),
+
             ]);
         }
     }
 }
-?>

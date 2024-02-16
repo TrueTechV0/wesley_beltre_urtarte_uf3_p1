@@ -79,9 +79,27 @@
     <li><a href="/filmout/newFilms">New Movies</a></li>
     <li><a href="/filmout/films">All Movies</a></li>
     <li><a href="/filmout/sortFilms">Movies Sorted by Year</a></li>
-    <li><a href="/filmout/countFilms">Count Movies</a></li>
-    </ul>
 
+    <li><a href="/actorout/actors">List Actors</a></li>
+   
+    <div>
+            <form action="{{ route('listActorsByDecade') }}" method="get">
+                <label for="decade">List By Decade:</label>
+                <select name="decade" id="decade">
+                    <option value="1970">1970s</option>
+                    <option value="1980">1980s</option>
+                    <option value="1990">1990s</option>
+                    <option value="2000">2000s</option>
+                    <option value="2010">2010s</option>
+                    <option value="2020">2020s</option>
+                </select>
+                <button type="submit">Filtrar</button>
+            </form>
+        </div>
+
+    <li><a href="/actorout/countActors">Count Actors</a></li>
+
+</ul>
     <div class="form-container">
         <h1 class="text-center">Add Movies</h1>
         <form action="{{ route('createFilm') }}" method="POST">
