@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Models\Film;
 
 class FilmController extends Controller
 {
     public static function readFilms(): array {
         $films_json = Storage::get('public/films.json');
-        $films_bbdd = DB::table("films")->select('name', 'year', 'genre', 'country', 'duration', 'img_url')->get();
+        $films_bbdd = Film::select('name', 'year', 'genre', 'country', 'duration', 'img_url')->get();
         $actorsArray = json_decode(json_encode($films_bbdd), true);
         $films = array_merge(json_decode($films_json, true), $actorsArray);
         return $films;
@@ -152,17 +153,17 @@ class FilmController extends Controller
         if ($filmExistInDB || $filmExistInJSON) {
             return view('welcome', ["Error" => "Lo siento, pero esta película ya existe"]);
         } else {
-            $newFilm = [
+            $newFilm = Film::create( [
                 'name' => $filmName,
                 'year' => $request->input('year'),
                 'genre' => $request->input('genre'),
                 'country' => $request->input('country'),
                 'duration' => $request->input('duration'),
                 'img_url' => $request->input('url'), // renaming 'url_image' to 'img_url'
-            ];
+            ]);
 
             // Insertar en la base de datos SQL
-            DB::table('films')->insert($newFilm);
+            //Film::table('films')->insert($newFilm);
 
             // Agregar el nuevo film al arreglo y escribirlo al archivo JSON
             $films[] = $newFilm;
