@@ -9,7 +9,7 @@ class ActorController extends Controller
 {
 
     public static function readActors(){
-        $actors=DB::table("actors")->select('name', 'surname', 'birthdate', 'country', 'img_url')->get();
+        $actors=Actor::select('name', 'surname', 'birthdate', 'country', 'img_url')->get();
         $actorsArray = json_decode(json_encode($actors),true);
         return $actorsArray;
     }
@@ -47,7 +47,8 @@ class ActorController extends Controller
     public function countActors()
     {
         // Obtener el conteo de actores utilizando el Query Builder
-        $count = DB::table('actors')->count();
+        $actors = ActorController::readActors();
+        $count = count($actors); 
 
         // Pasar el conteo a la vista count.blade.php
         return view('actors.count', ["count" => $count]);
@@ -55,9 +56,9 @@ class ActorController extends Controller
     }
 
 public function deleteActors($id){
-    $actorToDelete = DB::table('actors')->where('id', $id)->first();
+    $actorToDelete = Actor::find($id);
     if($actorToDelete){
-        DB::table('actors')->where('id', $id)->delete();
+        $actorToDelete->delete(); 
         return response()->json(['action' => $actorToDelete, 'status' => 'True']);
     }else{
         return response()->json(['action' => $actorToDelete, 'status' => 'False']);
